@@ -1,15 +1,12 @@
 <template>
     <div class="container">
         <div class="row">
-
-                <div class="col-md-6 ">
-                   <input type="file"  class="form-control" v-on:change="onImageChange" ref="fileInput">
-                </div>
-                <div class="col-md-6">
-                </div>
-
+            <div class="col-md-6 ">
+                <input type="file"  class="form-control" v-on:change="onImageChange" ref="fileInput">
+            </div>
+            <div class="col-md-6">
+            </div>
         </div>
-
         <div class="row">
             <div class="col-md-12 v_product" id="preview_tshirt" ref="printMe">
                 <span>
@@ -25,8 +22,8 @@
                 <p v-if="isLoading">Uploading</p>
                 <p class="v_user mt-1" v-if="isUploaded">Your design ready to share  s</p>
             </div>
-            <div class="col-md-12 v_content-center">
-                <h4  v-if="isUploaded"><a  v-bind:href="productUrl"  v-html="productUrl"></a></h4>
+            <div class="col-md-12 v_content-center v_link">
+                <h4 v-if="isUploaded"><a v-bind:href="productUrl" v-html="productUrl"></a></h4>
                 <br/>
             </div>
 
@@ -35,21 +32,13 @@
                     <a @click.prevent="share">Share Link</a> <span class="atag_slash">/</span>
                 </div>
                 <div class="atag">
-                  <a @click.prevent="download">Download Picture</a> <span class="atag_slash">/</span> 
+                  <a @click.prevent="download">Download Picture</a> <span class="atag_slash">/</span>
                 </div>
                 <div class="atag">
                     <a @click.prevent="make">Make Another</a>
                 </div>
-
-
             </div>
-          <!--   <div class="col-md-4 v_action v_download v_content-center">
-            </div>
-            <div class="col-md-4 v_action v_another v_content-center">
-            </div>
- -->
         </div>
-
     </div>
 </template>
 <style scoped>
@@ -82,7 +71,10 @@
         margin-top: -30px;
         font-weight: bold;
     }
-    .atag a{
+    .v_link {
+        margin-top: -40px;
+    }
+    .atag a {
         margin: 0px 10px;
     }
     @media only screen and (max-width:767px){
@@ -127,20 +119,10 @@
             }
         },
         methods: {
-            onImageChange(e){
+            onImageChange(e) {
                 const file = e.target.files[0];
-                this.logo = URL.createObjectURL(file);                
+                this.logo = URL.createObjectURL(file);
                 fileLogo = true;
-            },
-             async  convert() {
-
-              const el = this.$refs.printMe;
-
-               const options = {
-                    type: 'dataURL'
-              }
-              this.output = await this.$html2canvas(el, options);
-
             },
             async share() {
                 this.isUploaded = false;
@@ -152,10 +134,6 @@
                 }
                 this.isLoading = true;
                 this.output = await this.$html2canvas(el, options);
-
-
-                console.log(this.$parent.price);
-
 
                 let uri = '/api/designofme/addproduct/';
                 let product = {};
@@ -176,19 +154,15 @@
                         else {
                             this.isUploaded = true;
                             this.productUrl =response.data.product_id;
-                            this.$refs.fileInput.value = null; 
+                            this.$refs.fileInput.value = null;
                             file_path = response.data.product_image;
                             alert(response.data.message)
-
                         }
                         this.isLoading = false;
-
                     })
-
                     .catch(function(error){
-                            alert('error'+response.data.message)
+                        alert('error'+response.data.message)
                     });
-
                 console.log("share");
             },
             download() {
@@ -201,20 +175,16 @@
                     a.click();
                     document.body.removeChild(a);
                 }
-
             },
             make() {
                 console.log("make");
-                this.$refs.fileInput.value = null; 
+                this.$refs.fileInput.value = null;
                 this.logo = logo;
                 this.isUploaded = false;
                 this.productUrl = '';
-                file_path = ''; 
+                file_path = '';
                 this.isLoading = false;
-
-
             },
-           
             mounted() {
                 this.share()
           }

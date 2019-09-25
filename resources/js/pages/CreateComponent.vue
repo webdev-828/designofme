@@ -57,7 +57,6 @@
                             class="col-md-12 v_tshirt-view"
                             v-if="isLogoBtnActive" ref="foo"
                         >
-                        
                             <logo-component></logo-component>
                         </div>
                         <div
@@ -192,7 +191,6 @@
                this.$cookies.remove('username');
                this.$router.push('/');
             }
-          
         }
     }
 </script>

@@ -14,7 +14,7 @@ class AddPriceToOrders extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-             $table->string('price');
+             $table->string('prize');
         });
     }
 
@@ -26,7 +26,7 @@ class AddPriceToOrders extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('price');
+            $table->dropColumn('prize');
         });
     }
 }

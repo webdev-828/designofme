@@ -26,7 +26,6 @@ class CheckoutController extends Controller
     }
 
     public function makeOrder(Request $request) {
-
         $name = $request->post('firstname').' '.$request->post('lastname');
         $email = $request->post('email');
         $phone = $request->post('phone');
@@ -39,7 +38,7 @@ class CheckoutController extends Controller
         $product_key = $request->post('product_key');
         $product = Product::where('id', $product_key)->first();
 
-        $base_url = env('BASE_URL');
+        $base_url = request()->getSchemeAndHttpHost();;
 
         $price = "";
         $product_id = "";
@@ -57,7 +56,7 @@ class CheckoutController extends Controller
             'size' => $size,
             'color' => $color,
             'quantity' => "1",
-            'price' => $price,
+            'prize' => $price,
             'city' => $city,
             'country' => $country,
             'address' => $address,
@@ -65,7 +64,7 @@ class CheckoutController extends Controller
             'name' => $name,
             'email' => $email,
             'phone' => $phone,
-        ]);        
+        ]);
 
         $names = explode(" ", $name);
 
@@ -78,6 +77,7 @@ class CheckoutController extends Controller
         $request_s = new \Iyzipay\Request\CreateCheckoutFormInitializeRequest();
         $request_s->setLocale(\Iyzipay\Model\Locale::TR);
         $request_s->setConversationId("123456789");
+        $price = $price * 6;
         $request_s->setPrice($price);
         $request_s->setPaidPrice($price);
         $request_s->setCurrency(\Iyzipay\Model\Currency::TL);
@@ -92,8 +92,7 @@ class CheckoutController extends Controller
         $buyer->setName($names[0]);
         $buyer->setSurname('');
         if($name[1] !=""){
-        $buyer->setSurname($names[1]);
-
+            $buyer->setSurname($names[1]);
         }
         $buyer->setGsmNumber($phone);
         $buyer->setEmail($email);
@@ -152,40 +151,27 @@ class CheckoutController extends Controller
                     'status' => 'failed',
                     'message' => 'Failed to cretae an order',
                 ]);
-            
         }
-
     }
 
     public function orderCallback(Request $request) {
         $order = Order::where('token',$request->input('token'))->first();
         if($order){
+            \Mail::send('emails.test', ['id'=>$order->id,'product_id'=>$order->product_id,'saler_id'=>$order->saler_id,'price'=>$order->prize,'size'=>$order->size,'name'=>$order->name,'address'=>$order->address,'city'=>$order->city,'zipcode'=>$order->zipcode,'country'=>$order->country,'email'=>$order->email,'phone'=>$order->phone], function($message) {
+                $message->to('hello@designof.me', 'TestEmail')->subject('New Order Placed');
+                $message->from('info@allaboutelectronics.co.in','New Order Placed');
+            });
 
-          \Mail::send('emails.test', ['id'=>$order->id,'product_id'=>$order->product_id,'saler_id'=>$order->saler_id,'price'=>$order->price,'size'=>$order->size,'name'=>$order->name,'address'=>$order->address,'city'=>$order->city,'zipcode'=>$order->zipcode,'country'=>$order->country,'email'=>$order->email,'phone'=>$order->phone], function($message) {
-                 $message->to('hello@designof.me', 'TestEmail')->subject
-                    ('New Order Placed');
-                 $message->from('info@allaboutelectronics.co.in','New Order Placed');
-              });   
-
-          Order::where('id', $order->id)
-           ->update([
-               'status' => '1'
-            ]);
-
-            $base_url = env('BASE_URL');
+            Order::where('id', $order->id)
+                ->update([
+                    'status' => '1'
+                ]);
+            $base_url = request()->getSchemeAndHttpHost();
             $url = $base_url."/order/success/".$order->id."/".$order->saler_id."/".$order->size."/".$order->color;
             return Redirect::to($url);
-
-
-        }else{
-                $base_url = env('BASE_URL');
+        } else {
+                $base_url = request()->getSchemeAndHttpHost();
                 return Redirect::to($base_url);
-
         }
-
-
-
-
-
     }
 }

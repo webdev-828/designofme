@@ -15,29 +15,20 @@
                             <option value="font-b_italic">Text Type 04</option>
                         </select>
                     </div>
-
                     <div>
-
-                    <span class="input-group-text black-text font-weight-bold v_text-type">Text Size</span>
+                        <span class="input-group-text black-text font-weight-bold v_text-type">Text Size</span>
                         <div>
                             <span class="v_rangbox">{{textsize}}</span>
-                            <input type="range" min="10" max="50" step="1" v-model="textsize"  v-on:change="handleClick"> 
+                            <input type="range" min="10" max="50" step="1" v-model="textsize"  v-on:change="handleClick">
                         </div>
                     </div>
-                    
                     <div>
-                    <span class="input-group-text black-text font-weight-bold v_text-type">Choose Color</span>
-                    <div>
-                        
-                        <input type="radio" name="textcolor" class="custom-radio"  v-model="textcolor" value="#ef3131" label="Red" v-bind:inverted="true" v-bind:checked="true" v-bind:required="true" v-on:change="handleClick"><span class="redbox radio_color_box"></span>
-
-                        <input type="radio" name="textcolor" class="custom-radio" v-model="textcolor" value="#316cee" label="Blue" v-bind:inverted="true" v-bind:checked="false" v-bind:required="true" v-on:change="handleClick"><span class="bluebox radio_color_box"></span>
-
-                        <input type="radio" name="textcolor" class="custom-radio" v-model="textcolor" value="#000000" label="Black" v-bind:inverted="true" v-bind:checked="false" v-bind:required="true" v-on:change="handleClick"><span class="blackbox radio_color_box"></span>
-
-<!--                         <radio name="textcolor"  v-model="textcolor" value="#316cee" label="Blue" v-bind:inverted="true" v-bind:checked="false" v-bind:required="true" v-on:input="handleClick"></radio>
-                        <radio name="textcolor"  v-model="textcolor" value="#000000" label="Black" v-bind:inverted="true" v-bind:checked="false" v-bind:required="true" v-on:input="handleClick"></radio> -->
-                    </div>
+                        <span class="input-group-text black-text font-weight-bold v_text-type">Choose Color</span>
+                        <div>
+                            <input type="radio" name="textcolor" class="custom-radio"  v-model="textcolor" value="#ef3131" label="Red" v-bind:inverted="true" v-bind:checked="true" v-bind:required="true" v-on:change="handleClick"><span class="redbox radio_color_box"></span>
+                            <input type="radio" name="textcolor" class="custom-radio" v-model="textcolor" value="#316cee" label="Blue" v-bind:inverted="true" v-bind:checked="false" v-bind:required="true" v-on:change="handleClick"><span class="bluebox radio_color_box"></span>
+                            <input type="radio" name="textcolor" class="custom-radio" v-model="textcolor" value="#000000" label="Black" v-bind:inverted="true" v-bind:checked="false" v-bind:required="true" v-on:change="handleClick"><span class="blackbox radio_color_box"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-12 v_product" id="preview_tshirt" ref="printMe">
@@ -52,15 +43,15 @@
                     <p v-if="isLoading">Uploading</p>
                     <p class="v_user mt-1" v-if="isUploaded">Your design ready to share</p>
                 </div>
-                <div class="col-md-12 v_content-center">
-                    <h4  v-if="isUploaded"><a  v-bind:href="productUrl"  v-html="productUrl"></a></h4>
+                <div class="col-md-12 v_content-center v_link">
+                    <h4 v-if="isUploaded"><a v-bind:href="productUrl" v-html="productUrl"></a></h4>
                 </div>
                 <div class="col-md-12 v_action v_share v_content-center">
                     <div class="atag">
                         <a @click.prevent="share">Share Link</a> <span class="atag_slash">/</span>
                     </div>
                     <div class="atag">
-                      <a @click.prevent="download">Download Picture</a> <span class="atag_slash">/</span> 
+                      <a @click.prevent="download">Download Picture</a> <span class="atag_slash">/</span>
                     </div>
                     <div class="atag">
                         <a @click.prevent="make">Make Another</a>
@@ -147,7 +138,7 @@
         margin-top: -30px;
          font-weight: bold;
     }
-    .v_select_type{
+    .v_select_type {
         width: 220px;
         height: 40px;
         border: 1px solid #ddd;
@@ -155,7 +146,7 @@
         font-size: 22px;
         -webkit-appearance :menulist;
     }
-    .v_rangbox{
+    .v_rangbox {
         height: 40px;
         width: 40px;
         border: 1px solid #ddd;
@@ -166,6 +157,9 @@
         vertical-align: middle;
         line-height: 37px;
     }
+    .v_link {
+        margin-top: -40px;
+    }
     .custom-radio {
         margin: 0px 10px;
         font-size: 24px;
@@ -173,20 +167,20 @@
         height: 25px;
         float:left;
     }
-    .radio_color_box{
+    .radio_color_box {
         float: left;
         border:1px solid #ddd;
         height: 25px;
         width: 25px;
     }
-    .radio_color_box.redbox{
+    .radio_color_box.redbox {
         background-color: #ef3131;
     }
-    .radio_color_box.bluebox{
+    .radio_color_box.bluebox {
         background-color: #316cee;
     }
-    .radio_color_box.blackbox{
-        background-color: #000000;    
+    .radio_color_box.blackbox {
+        background-color: #000000;
     }
     .atag a{
         margin: 0px 10px;
@@ -215,11 +209,9 @@
     import { mdbInput, mdbBtn } from 'mdbvue';
     import Vue from 'vue';
     import VueHtml2Canvas from 'vue-html2canvas';
-//    import html2canvas from 'html2canvas';
     import RadioComponent from '../components/RadioComponent.vue';
     import tshirt from '../../assets/images/tshirt.png';
     Vue.use(VueHtml2Canvas);
-
     var fileLogo = false,file_path ="";
     export default {
         name: 'InputsProPage',
@@ -243,16 +235,6 @@
             }
         },
         methods: {
-             async  convert() {
-
-              const el = this.$refs.printMe;
-
-               const options = {
-                    type: 'dataURL'
-              }
-              this.output = await this.$html2canvas(el, options);
-
-            },
             async share() {
                 const el = this.$refs.printMe;
                 const options = { type: 'dataURL' }
@@ -281,29 +263,18 @@
                         else {
                             this.isUploaded = true;
                             this.productUrl =response.data.product_id;
-                            this.text = ''; 
+                            this.text = '';
                             file_path = response.data.product_image;
                             alert(response.data.message)
-
                         }
                         this.isLoading = false;
-
                     })
-
                     .catch(function(error){
-                            alert('error'+response.data.message)
+                        alert('error'+response.data.message)
                     });
-
-
-
-
-
-
                 console.log("share");
-
             },
             download() {
-
                 if(file_path !=""){
                     var a = document.createElement('A');
                     a.href = file_path;
@@ -312,22 +283,19 @@
                     a.click();
                     document.body.removeChild(a);
                 }
-
                 console.log("download");
             },
             make() {
-                 console.log("make");
-                this.text = ''; 
+                console.log("make");
+                this.text = '';
                 this.isUploaded = false;
                 this.productUrl = '';
-                file_path = ''; 
+                file_path = '';
                 this.isLoading = false;
                 console.log("make");
             },
             handleClick: function(val) {
-                console.log('12122121');
                 var el = document.getElementById('shirt-text');
-
                 el.removeAttribute("style");
                 if (this.texttype === 'font-normal') {
                     el.classList.replace(el.className, 'v_text-normal');
@@ -343,11 +311,6 @@
                 }
                 el.style.fontSize = this.textsize+'px';
                 el.style.color = this.textcolor;
-            },
-            convert() {
-                html2canvas(document.getElementById('preview_tshirt')).then(function(canvas) {
-                    document.body.appendChild(canvas);
-                });
             }
         }
     }

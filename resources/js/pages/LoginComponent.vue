@@ -97,18 +97,23 @@
                 var formEl = document.getElementById('needs-validation');
                 var isValid = formEl.checkValidity();
                 if (isValid) {
-                    let uri = 'api/designofme/signin/';
+                    let uri = 'api/designofme/signin';
                     this.axios.post(uri, this.user)
                     .then(response=> {
-                        console.log(response);
                         if (response.data.status === 'failed') {
                             document.getElementById('validationCustomEmail').value = '';
                             document.getElementById('validationCustomPass').value = '';
-                        }
-                        else {
-                            this.$store.commit('setUsername', response.data.name);
-                            this.$cookies.set('username', response.data.name);
-                            this.$router.push(response.data.name);
+                        } else {
+                            var role = response.data.role;
+                            if (role == 0) {
+                                this.$store.commit('setUsername', response.data.name);
+                                this.$cookies.set('username', response.data.name);
+                                this.$router.push(response.data.name);
+                            } else {
+                                this.$store.commit('setUsername', response.data.name);
+                                this.$cookies.set('username', response.data.name);
+                                this.$router.push('dashboard');
+                            }
                         }
                     })
                     .catch(function(error){

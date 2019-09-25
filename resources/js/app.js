@@ -39,6 +39,8 @@ import ProductComponent from './pages/ProductComponent.vue';
 import CheckoutComponent from './pages/CheckoutComponent.vue';
 import SuccessComponent from './pages/SuccessComponent.vue';
 import PageNotFoundComponent from './pages/PageNotFoundComponent.vue';
+import DashboardComponent from './pages/DashboardComponent.vue';
+import WithdrawComponent from './pages/WithdrawComponent.vue';
 
 const routes = [
     {
@@ -57,11 +59,20 @@ const routes = [
         component: LoginComponent
     },
     {
+        name: 'dashboard',
+        path: '/dashboard',
+        component: DashboardComponent
+    },
+    {
+        name: 'withdraw',
+        path: '/withdraw',
+        component: WithdrawComponent
+    },
+    {
         name: '404',
         path: '/404',
         component: PageNotFoundComponent
-    },    
-
+    },
     {
         name: 'profile',
         path: '/:id',
@@ -86,8 +97,7 @@ const routes = [
         name: 'success',
         path: '/order/success/:id/:userid/:size/:color',
         component: SuccessComponent
-    },
-    
+    }
 ];
 
 const router = new VueRouter({

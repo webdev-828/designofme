@@ -41,8 +41,13 @@
                 </div>
                 <div class="col-md-12">
                     <p class="v_activelink mt-5">Active Links</p>
-                    <p class="v_link mt-1">designof.me/nightlife_inspector_01   /   12:00:00</p>
-                    <p class="v_link mt-1">designof.me/nightlife_inspector_01   /   12:00:00</p>
+                    <p
+                        class="v_link mt-1"
+                        v-for="link in links"
+                        :key="link.id"
+                    >
+                        {{ host +'/' + username + '/' + link }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -85,40 +90,54 @@
             'info-component': InfoComponent
         },
         data: function() {
+            let uri = 'api/designofme/fetchuser?username=' + this.$cookies.get('username');
+            this.axios.post(uri)
+            .then(response => {
+                this.host = response.data.host;
+                this.infos[0].amount = response.data.sales;
+                this.infos[1].amount = response.data.earning + ' $';
+                this.infos[2].amount = response.data.view;
+                this.links = response.data.products;
+            })
+            .catch(function(error) {
+                console.log(error);
+            })
             return {
+                host: String,
                 username: this.$cookies.get('username'),
                 infos: [
                     {
                         id: 0,
-                        amount: 134,
+                        amount: String,
                         text: 'Sales'
                     },
                     {
                         id: 1,
-                        amount: 1120 + ' $',
+                        amount: String,
                         text: 'Earning'
                     },
                     {
                         id: 2,
-                        amount: 10 + '.' + 350,
+                        amount: String,
                         text: 'View'
                     }
-                ]
+                ],
+                links: Array
             }
         },
         methods: {
             withdraw() {
-
+                console.log('reached out here');
+                this.$router.push('withdraw')
             },
             create() {
                 this.$router.push(this.$store.getters.username + '/createapparel');
             },
             logout(){
-               this.$store.commit('setUsername','');
-               this.$cookies.remove('username');
+                this.$store.commit('setUsername','');
+                this.$cookies.remove('username');
                 this.$router.push('/');
             }
-
         }
     }
 </script>

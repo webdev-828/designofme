@@ -17,7 +17,6 @@
         input{
             display: none;
         }
-
         input[type=checkbox],
         input[type=radio] {
             -webkit-appearance: none;

@@ -22,10 +22,26 @@ class ProductController extends Controller
         return response()->json(User::all());
     }
 
+    public function getproduct(Request $request) {
+        $key = $request->get('id');
+        $product = Product::select('username','price','time','type','image', 'user_id')->join('users', 'users.id', '=', 'products.user_id')->where('products.id', $key)->first();
+        if ($product){
+            $view = User::where('id', $product->user_id)->first()->view + 1;
+            User::where('id', $product->user_id)
+                ->update([
+                    'view' => $view
+                ]);
+            return response()->json([
+                'data'=>$product
+            ]);
+        } else {
+            return response()->json('failed');
+        }
+    }
+
     public function addproduct(Request $request) {
         $userid ="";
         if($request->post('username')){
-
             $userid = User::where('username',$request->post('username'))->first()['id'];
         }
 
@@ -38,8 +54,8 @@ class ProductController extends Controller
             $logo = base64_decode($request->post('logo'));
             $png_url = "product-".time().".png";
             $path = public_path().'/images/designs/' . $png_url;
-            Image::make(file_get_contents($request->post('logo')))->save($path);     
-            
+            Image::make(file_get_contents($request->post('logo')))->save($path);
+
             $product_key = str_random(64);
             $random_product_key = $product_key;
 
@@ -50,7 +66,7 @@ class ProductController extends Controller
                 'time' => $time,
                 'type' => $request->get('type'),
                 'key' => $random_product_key,
-            ]);        
+            ]);
 
             if($product->save()) {
                 return response()
@@ -60,84 +76,20 @@ class ProductController extends Controller
                         'product_image' => request()->getSchemeAndHttpHost().'/images/designs/'.$png_url,
                         'message' => "Product added successfully",
                     ]);
-            }else{
+            } else {
                 return response()
                     ->json([
                         'status' => 'failed',
                         'message' => 'Product not successfully',
                     ]);
-                
             }
-        }else{
-                return response()
-                    ->json([
-                        'status' => 'failed',
-                        'message' => 'Product not successfully',
-                        'userid' =>$userid 
-                    ]);
-
-        }
-
-    }
-
-    public function siginin(Request $request) {
-        $username = $request->get('email');
-        $password = md5($request->get('password'));
-        $user = User::where('email', $username)->where('password', $password)->first();
-        if (!$user) {
-            $user = User::where('username', $username)->where('password', $password)->first();
-        }
-        if (!$user) {
-            return response()->json([
-                'status' => 'failed'
-            ]);
         } else {
-            $username = $user->username;
-            $token = Str::random(30);
             return response()
                 ->json([
-                    'status' => 'success',
-                    'name' => $username,
-                    'token' => $token
-                ])
-                ->cookie('token', $token, 60);
+                    'status' => 'failed',
+                    'message' => 'Product not successfully',
+                    'userid' =>$userid
+                ]);
         }
     }
-
-    public function signup(Request $request) {
-        $user = new User([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'username' => $request->get('username'),
-            'password' => md5($request->get('password'))
-        ]);
-
-        if($user->save()) {
-            $token = Str::random(30);
-            return response()
-                ->json([
-                    'status' => 'success',
-                    'name' => $user->username,
-                    'token' => $token
-                ])
-                ->cookie('token', $token, 60);
-        }
-        else
-            return response()->json('failed');
-
-    }
-
-    public function getproduct(Request $request) {
-        $key = $request->get('id');
-        $product = Product::select('username','price','time','type','image')->join('users', 'users.id', '=', 'products.user_id')->where('products.id', $key)->first();
-//        print_r($product);
-        if ($product){
-            return response()->json([
-                'data'=>$product
-            ]);
-        }
-        else {
-            return response()->json('failed');
-        }
-    }    
 }

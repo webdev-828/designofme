@@ -18,7 +18,7 @@
                                 Please input your first name.
                             </div>
                         </div>
-                  
+
                         <label for="validationCustomLastName">Last Name</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -31,7 +31,7 @@
                                 Please input your last name.
                             </div>
                         </div>
-                   
+
                         <label for="validationCustomCity">City</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -155,7 +155,6 @@
     export default {
         name: 'Basic',
         data: function() {
-
             return {
                 user: {},
                 color:"",
@@ -170,12 +169,10 @@
         },
         methods: {
             handleSubmit(event) {
-
                 this.key = this.$route.params.id;
                 this.color = this.$route.params.color;
-                this.size = this.$route.params.size;  
+                this.size = this.$route.params.size;
 
-                
                 this.user.product_key = this.key;
                 this.user.color = this.color;
                 this.user.size = this.size;
@@ -191,7 +188,6 @@
                 var addresEl = document.getElementById('validationCustomAddress');
                 var cityEl = document.getElementById('validationCustomCity');
                 var zipcodeEl = document.getElementById('validationCustomZipcode');
-                
 
                 if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email)) {
                     emailEl.value = '';
@@ -204,17 +200,20 @@
                 let uri = '../../../../api/designofme/checkout';
                 this.axios.post(uri, this.user)
                 .then(response => {
-                    
                     if (response.data.status === 'success') {
-                        console.log("True");
                         window.location.href = "https://sandbox-cpp.iyzipay.com/?token="+response.data.token
-                    }else{
+                    } else {
                         console.log("Failed");
                     }
                 })
                 .catch(function(error){
                     console.log(error);
                 });
+            },
+            logout(){
+               this.$store.commit('setUsername','');
+               this.$cookies.remove('username');
+               this.$router.push('/');
             }
         }
     }
