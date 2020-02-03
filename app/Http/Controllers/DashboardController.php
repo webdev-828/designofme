@@ -63,9 +63,9 @@ class DashboardController extends Controller
                 'earning' => $earing
             ]);
         $orders = Order::select('name', 'country', 'city', 'address', 'email', 'phone', 'image', 'color', 'size', 'prize', 'sellername', 'selleremail', 'status', 'token')
-                    ->leftjoin('users', 'users.id', '=', 'orders.saler_id')
-                    ->leftjoin('products', 'products.id', '=', 'orders.product_id')
-                    ->get();
+                        ->leftjoin('users', 'users.id', '=', 'orders.saler_id')
+                        ->leftjoin('products', 'products.id', '=', 'orders.product_id')
+                        ->get();
         if (!$orders) {
             return response()->json([
                 'status' => 'failed'
@@ -83,9 +83,9 @@ class DashboardController extends Controller
                 'status' => '3'
             ]);
         $orders = Order::select('name', 'country', 'city', 'address', 'email', 'phone', 'image', 'color', 'size', 'prize', 'sellername', 'selleremail', 'status', 'token')
-                    ->leftjoin('users', 'users.id', '=', 'orders.saler_id')
-                    ->leftjoin('products', 'products.id', '=', 'orders.product_id')
-                    ->get();
+                        ->leftjoin('users', 'users.id', '=', 'orders.saler_id')
+                        ->leftjoin('products', 'products.id', '=', 'orders.product_id')
+                        ->get();
         if (!$orders) {
             return response()->json([
                 'status' => 'failed'

@@ -1,7 +1,7 @@
 <template>
     <div class="v_navbar">
         <p class="h1 white-text font-weight-normal text-center mt-2 mb-2">Design of me</p>
-        <a href="javscript:void(0);" class="v_navbar_right" v-if="this.$store.getters.username" @click="$parent.logout">Logout</a>
+        <a href="javscript:void(0);" class="v_navbar_right" v-if="this.$cookies.get('username')" @click="$parent.logout">Logout</a>
     </div>
 </template>
 

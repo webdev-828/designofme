@@ -5,7 +5,7 @@
         <div class="jumbotron text-center">
         <h1 class="display-3">Thank You!</h1>
         <h2 class="display-3">Your Order Created Successfully</h2>
-        <h4 class="display-3">Your OrderId is : {{order_id}}</h4>
+        <h4 class="display-3">Your OrderId is : {{ order_id }}</h4>
         </div>
 
         <div class="col-md-6 v_content-center">

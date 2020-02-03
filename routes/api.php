@@ -17,10 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('designofme/', 'UserController@index');
+Route::any('designofme/', 'UserController@index');
 Route::get('designofme/checkuser', 'UserController@checkuser');
 Route::post('designofme/signin/', 'UserController@siginin');
 Route::post('designofme/signup', 'UserController@signup');
+Route::post('designofme/logout', 'UserController@logout');
 Route::post('designofme/fetchuser', 'UserController@fetchuser');
 Route::any('designofme/addproduct', 'ProductController@addproduct');
 Route::get('designofme/getproduct', 'ProductController@getproduct');

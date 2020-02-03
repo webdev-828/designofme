@@ -133,7 +133,8 @@
             return {
                 tab: 0,
                 users: Array,
-                orders: Array
+                orders: Array,
+                withdraws: Array
             }
         },
         components: {
@@ -223,6 +224,7 @@
             logout(){
                 this.$store.commit('setUsername','');
                 this.$cookies.remove('username');
+                this.$cookies.remove('token');
                 this.$router.push('/');
             }
         },

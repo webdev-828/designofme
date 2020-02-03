@@ -91,6 +91,8 @@
         },
         data: function() {
             let uri = 'api/designofme/fetchuser?username=' + this.$cookies.get('username');
+            console.log(this.$cookies.get('laravel_session'));
+            console.log('reached out here');
             this.axios.post(uri)
             .then(response => {
                 this.host = response.data.host;
@@ -136,6 +138,7 @@
             logout(){
                 this.$store.commit('setUsername','');
                 this.$cookies.remove('username');
+                this.$cookies.remove('token');
                 this.$router.push('/');
             }
         }

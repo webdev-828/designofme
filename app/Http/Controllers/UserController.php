@@ -43,6 +43,10 @@ class UserController extends Controller
             $username = $user->username;
             $userrole = $user->role;
             $token = Str::random(30);
+            User::where('username', $username)
+                ->update([
+                    'remember_token' => $token
+                ]);
             return response()
                 ->json([
                     'status' => 'success',
@@ -67,6 +71,10 @@ class UserController extends Controller
         ]);
         if($user->save()) {
             $token = Str::random(30);
+            User::where('username', $username)
+                ->update([
+                    'remember_token' => $token
+                ]);
             return response()
                 ->json([
                     'status' => 'success',

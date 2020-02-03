@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav-component></nav-component>
-        withdraw
+        <card-component @input="onclick" :buttonName="'continue'"></card-component>
     </div>
 </template>
 
@@ -11,20 +11,25 @@
 
 <script>
     import NavComponent from '../components/NavComponent.vue';
+    import CreditCardComponent from '../components/CreditCardComponent.vue';
     export default {
-        name: 'basic',
         data: function() {
+
             return {
-                username: 'aaa'
+                isInput: 0
             }
         },
         components: {
-            'nav-component': NavComponent
+            'nav-component': NavComponent,
+            'card-component': CreditCardComponent
         },
         methods: {
+            onclick(cardNum, cardOwner, cardMonth, cardYear, cardCvc) {
+            },
             logout(){
                 this.$store.commit('setUsername','');
                 this.$cookies.remove('username');
+                this.$cookies.remove('token');
                 this.$router.push('/');
             }
         }

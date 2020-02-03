@@ -213,6 +213,7 @@
             logout(){
                this.$store.commit('setUsername','');
                this.$cookies.remove('username');
+               this.$cookies.remove('token');
                this.$router.push('/');
             }
         }
